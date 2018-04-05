@@ -118,13 +118,13 @@ for (i, c) in enumerate(cnts):
 	# since credit cards used a fixed size fonts with 4 groups
 	# of 4 digits, we can prune potential contours based on the
 	# aspect ratio
-	if ar > 1.5 and ar < 2.0:
+	if ar > 1.5 and ar < 1.75:
 		# contours can further be pruned on minimum/maximum width
 		# and height
-	#	if (w > 40 and w < 55) and (h > 10 and h < 20):
+		if (w > 10 and w < 60) and (h > 10 and h < 30):
 			# append the bounding box region of the digits group
 			# to our locations list
-			locs.append((x, y, w, h))
+                        locs.append((x, y, w, h))
 
 # sort the digit locations from left-to-right, then initialize the
 # list of classified digits
@@ -175,6 +175,8 @@ for (i, (gX, gY, gW, gH)) in enumerate(locs):
 		# the classification for the digit ROI will be the reference
 		# digit name with the *largest* template matching score
 		groupOutput.append(str(np.argmax(scores)))
+		#print(np.argmax(scores))
+		#print(scores)
 
 	# draw the digit classifications around the group
 	cv2.rectangle(image, (gX - 5, gY - 5),
@@ -188,7 +190,8 @@ for (i, (gX, gY, gW, gH)) in enumerate(locs):
 	output.extend(groupOutput)
 
 # display the output credit card information to the screen
-print("Credit Card Type: {}".format(FIRST_NUMBER[output[0]]))
-print("Credit Card #: {}".format("".join(output)))
+#print("Credit Card Type: {}".format(FIRST_NUMBER[output[0]]))
+print("Rack Number: {}".format("".join(output)))
 cv2.imshow("Image", image)
 cv2.waitKey(0)
+
